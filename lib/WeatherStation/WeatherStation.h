@@ -9,16 +9,15 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "freertos/queue.h"
-#include "driver/gpio.h"
+#include "WindSensor.h"
 
 class WeatherStation: 
   public IWebConfig,
   public MQTTClientCallback {
 
 private:
+
+  WindSensor * windSensor;
 
   MQTTClient * WeatherStation_mqttClient;  
   String mqttBaseTopic = "/";

@@ -32,8 +32,8 @@ void WeatherStation::parseWebConfig(JsonObjectConst configObject){
 };
 
 void WeatherStation::setup(void){
-
-
+  windSensor = new WindSensor(PIN_WSPEED);
+  windSensor->begin();
 };
 
 void WeatherStation::loop(void){
@@ -42,8 +42,8 @@ void WeatherStation::loop(void){
     lastPublishMillis = currentMillis;
     
     String topic = this->mqttBaseTopic + "WeatherStation";
-    WeatherStation_mqttClient->publish(topic.c_str(),"Message from WeatherStation loop");
-    Serial.printf("Message from WeatherStation loop published to topic %s\n", topic.c_str());
+    // WeatherStation_mqttClient->publish(topic.c_str(),"Message from WeatherStation loop");
+    // Serial.printf("Message from WeatherStation loop published to topic %s\n", topic.c_str());
 
   }
 
