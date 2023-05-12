@@ -33,7 +33,10 @@ void WeatherStation::parseWebConfig(JsonObjectConst configObject){
 
 void WeatherStation::setup(void){
   windSensor = new WindSensor(PIN_WSPEED);
+  rainSensor = new RainSensor(PIN_RAIN);
+
   windSensor->begin();
+  rainSensor->begin();
 };
 
 void WeatherStation::loop(void){

@@ -10,6 +10,7 @@
 #include <inttypes.h>
 
 #include "WindSensor.h"
+#include "RainSensor.h"
 
 class WeatherStation: 
   public IWebConfig,
@@ -18,6 +19,7 @@ class WeatherStation:
 private:
 
   WindSensor * windSensor;
+  RainSensor * rainSensor;
 
   MQTTClient * WeatherStation_mqttClient;  
   String mqttBaseTopic = "/";
