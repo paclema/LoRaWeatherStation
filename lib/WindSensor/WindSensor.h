@@ -8,8 +8,8 @@
 #include <freertos/semphr.h>
 #include <driver/gpio.h>
 
-#define RAIN_KMH_PER_INTERRUPT 2.4
-#define RAIN_PRINT_TIME 5000
+#define WSPEED_KMH_PER_INTERRUPT 2.4
+#define WSPEED_PRINT_TIME 5000
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
@@ -19,10 +19,11 @@ private:
 
   gpio_num_t gpioPin;
   uint64_t gpioPinBitMask;
-  volatile int rainISRConuter = 0;
+  volatile int wspeedISRConuter = 0;
+  volatile unsigned long wspeedTime, wspeedLast;
 
   TaskHandle_t xHandle = NULL;
-  SemaphoreHandle_t rainSemaphore = NULL;
+  SemaphoreHandle_t wspeedSemaphore = NULL;
 
   static void IRAM_ATTR ISRCounter(void* arg);
   static void calculateValue(void* arg);
