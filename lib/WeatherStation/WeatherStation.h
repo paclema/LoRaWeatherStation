@@ -10,6 +10,7 @@
 #include <inttypes.h>
 
 #include "WindSensor.h"
+#include "WindDirSensor.h"
 #include "RainSensor.h"
 
 class WeatherStation: 
@@ -19,6 +20,7 @@ class WeatherStation:
 private:
 
   WindSensor * windSensor;
+  WindDirSensor * windDirSensor;
   RainSensor * rainSensor;
 
   MQTTClient * WeatherStation_mqttClient;  
