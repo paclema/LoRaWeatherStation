@@ -9,9 +9,9 @@ WindDirSensor::WindDirSensor(int gpioPin): ADCpin(gpioPin){
 
 void WindDirSensor::begin(void){
 
-  adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_width(ADC_WIDTH_BIT_13);
   adc1_config_channel_atten((adc1_channel_t)gpioPin, ADC_ATTEN_DB_11);
-  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_12, ESP_ADC_CAL_VAL_DEFAULT_VREF, &adcCalCharacteristics);
+  esp_adc_cal_characterize(ADC_UNIT_1, ADC_ATTEN_DB_11, ADC_WIDTH_BIT_13, ESP_ADC_CAL_VAL_DEFAULT_VREF, &adcCalCharacteristics);
 
 
   // Task sensor readings configuration
