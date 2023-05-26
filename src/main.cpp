@@ -5,7 +5,7 @@
 // #define DEBUG_ESP_CORE
 
 // Enable wifi diagnostic using platformio build_glag: -D ENABLE_SERIAL_DEBUG:
-#define ENABLE_SERIAL_DEBUG true
+// #define ENABLE_SERIAL_DEBUG true
 
 
 // Device configurations
