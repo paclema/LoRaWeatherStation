@@ -32,7 +32,13 @@ private:
 
   gpio_num_t gpioPin;
   const uint8_t ADCpin;
-	const adc1_channel_t ADCchannel = ADC1_CHANNEL_4; // GPIO% fpr ESP32S2
+  #if CONFIG_IDF_TARGET_ESP32
+	  static const adc1_channel_t ADCchannel = ADC1_CHANNEL_4;
+    static const adc_bits_width_t width_bit = ADC_WIDTH_BIT_12;
+  #elif CONFIG_IDF_TARGET_ESP32S2
+	  static const adc1_channel_t ADCchannel = ADC1_CHANNEL_4; // GPIO5 for ESP32S2
+    static const adc_bits_width_t width_bit = ADC_WIDTH_BIT_13;
+  #endif
 
   esp_adc_cal_characteristics_t adcCalCharacteristics;
 
