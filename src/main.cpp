@@ -61,7 +61,9 @@ String getMemoryFree(){  return String(freeBytes);};
 #ifdef ARDUINO_IOTPOSTBOX_V1
 String getVBat(){ return String((float)power.vBatSense.mV/1000,4);}
 String getVBus(){ return String((float)power.vBusSense.mV/1000,3);}
-  #endif
+#endif
+String getWDirADC(){ return String((float)wStation.getWDirADC());}
+String getWDirDeg(){ return String((float)wStation.getWDirDeg());}
 
 void setup() {
   Serial.begin(115200);
@@ -91,6 +93,9 @@ void setup() {
   config.addDashboardObject("VBat", getVBat);
   config.addDashboardObject("VBus", getVBus);
   #endif
+  config.addDashboardObject("getWDirADC", getWDirADC);
+  config.addDashboardObject("getWDirDeg", getWDirDeg);
+  
   
   mqttClient = config.getMQTTClient();
   wStation.setMQTTClient(mqttClient);

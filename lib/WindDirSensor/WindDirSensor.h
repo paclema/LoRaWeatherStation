@@ -26,12 +26,14 @@ const float voltajes[16] = {
 
 #define WDIR_PRINT_TIME 500
 
+#define NO_OF_SAMPLES   64          // Multisampling
 
 class WindDirSensor {
 private:
 
   gpio_num_t gpioPin;
   const uint8_t ADCpin;
+  int currentWDirmV;
   #if CONFIG_IDF_TARGET_ESP32
 	  static const adc1_channel_t ADCchannel = ADC1_CHANNEL_4;
     static const adc_bits_width_t width_bit = ADC_WIDTH_BIT_12;
@@ -53,5 +55,16 @@ public:
   WindDirSensor(int gpioPin);
   void begin(void);
   int getWindDirection(void);
+
+  float getWDirADC(void) { 
+    this->getWindDirection(); 
+    return (float) currentWDirmV;
+  }
+
+  float getWDirDeg(void) { 
+    int index = this->getWindDirection(); 
+    return (float) grados[index];
+  }
+
 };
 #endif

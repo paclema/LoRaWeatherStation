@@ -20,14 +20,35 @@ void WindDirSensor::begin(void){
 };
 
 int WindDirSensor::getWindDirection() {
-  int rawValue = adc1_get_raw(this->ADCchannel);
-  uint32_t voltage = esp_adc_cal_raw_to_voltage(rawValue, &this->adcCalCharacteristics);
+  // int rawValue = adc1_get_raw(this->ADCchannel);
+  // uint32_t voltage = esp_adc_cal_raw_to_voltage(rawValue, &this->adcCalCharacteristics);
 
-  Serial.printf("VBAT sense reads %dmV --> CALIBRATED: %dmV \n", rawValue, voltage);
+  // Serial.printf("VBAT sense reads %dmV --> CALIBRATED: %dmV \n", rawValue, voltage);
+
+  // // Escalar el valor a voltaje
+  // // float scaledVoltage = (float)voltage / 1000.0;
+  // float scaledVoltage = (float)voltage;
+
+  uint32_t adc_reading = 0;
+  // Multisampling
+  for (int i = 0; i < NO_OF_SAMPLES; i++) {
+    adc_reading += adc1_get_raw((adc1_channel_t)this->ADCchannel);
+  }
+  adc_reading /= NO_OF_SAMPLES;
+  uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, &this->adcCalCharacteristics);
+  Serial.printf("WDIR sense reads %dmV --> CALIBRATED: %dmV \n", adc_reading, voltage);
+
+  // int rawValue = adc1_get_raw(this->ADCchannel);
+  // uint32_t voltage = esp_adc_cal_raw_to_voltage(rawValue, &this->adcCalCharacteristics);
+  // Serial.printf("WDIR sense reads %dmV --> CALIBRATED: %dmV \n", rawValue, voltage);
+
 
   // Escalar el valor a voltaje
-  // float scaledVoltage = (float)voltage / 1000.0;
-  float scaledVoltage = (float)voltage;
+  float scaledVoltage = (float)adc_reading;
+  currentWDirmV = adc_reading;
+
+  // currentWDirmV = rawValue;
+  // float scaledVoltage = (float)rawValue;
 
   // Buscar el valor de grados más cercano en la tabla
   int closestIndex = 0;
@@ -52,14 +73,11 @@ void WindDirSensor::calculateValue(void* arg) {
   unsigned long lastWspeedCheck = millis();
 
   while(1) {
-
     float deltaTime  = (millis() - lastWspeedCheck) / 1000.0 ;
-
 
     int index = sensor->getWindDirection();
     Serial.printf("WindDir:%d  Deg %.1f-- deltaTime: %.4f\n", index, grados[index], (float)deltaTime);
 
     vTaskDelay(WDIR_PRINT_TIME / portTICK_PERIOD_MS);
-
   }
 };

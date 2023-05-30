@@ -70,5 +70,8 @@ public:
     this->WeatherStation_mqttClient->addCallback(this);
   }
 
+
+  float getWDirADC(void) { return this->windDirSensor->getWDirADC(); }
+  float getWDirDeg(void) { return this->windDirSensor->getWDirDeg(); }
 };
 #endif
