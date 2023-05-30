@@ -36,6 +36,10 @@ void WeatherStation::setup(void){
   windDirSensor = new WindDirSensor(PIN_WDIR);
   rainSensor = new RainSensor(PIN_RAIN);
 
+  if (! bme.begin(0x76, &Wire)) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+  }
+
   windSensor->begin();
   windDirSensor->begin();
   rainSensor->begin();
@@ -49,6 +53,9 @@ void WeatherStation::loop(void){
     String topic = this->mqttBaseTopic + "WeatherStation";
     // WeatherStation_mqttClient->publish(topic.c_str(),"Message from WeatherStation loop");
     // Serial.printf("Message from WeatherStation loop published to topic %s\n", topic.c_str());
+
+    // bme.takeForcedMeasurement();
+    Serial.printf("Temp: %.2fC - Hum: %.2f\% - Pressure: %fhPa - Alt: %fm\n", bme.readTemperature(), bme.readHumidity(), bme.readPressure() / 100.0F, bme.readAltitude(SEALEVELPRESSURE_HPA));
 
   }
 

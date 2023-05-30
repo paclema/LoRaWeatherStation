@@ -13,6 +13,13 @@
 #include "WindDirSensor.h"
 #include "RainSensor.h"
 
+// BME280 Sensor
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+#define SEALEVELPRESSURE_HPA (1013.25)
+
 class WeatherStation: 
   public IWebConfig,
   public MQTTClientCallback {
@@ -22,6 +29,7 @@ private:
   WindSensor * windSensor;
   WindDirSensor * windDirSensor;
   RainSensor * rainSensor;
+  Adafruit_BME280 bme; // I2C (SDA = 33 ,SCL = 38)
 
   MQTTClient * WeatherStation_mqttClient;  
   String mqttBaseTopic = "/";
