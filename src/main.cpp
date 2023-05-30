@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
-
+#include "soc/soc.h"
+#include "soc/rtc_cntl_reg.h"
 // Main variables:
 // #define DEBUG_ESP_CORE
 
@@ -66,6 +67,8 @@ String getWDirADC(){ return String((float)wStation.getWDirADC());}
 String getWDirDeg(){ return String((float)wStation.getWDirDeg());}
 
 void setup() {
+  WRITE_PERI_REG(RTC_CNTL_BROWN_OUT_REG, 0); //disable brownout detector
+  
   Serial.begin(115200);
   
   // TODO: this is messing up with ESP32S2 Native USB CDC serial output
