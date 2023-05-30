@@ -66,7 +66,8 @@ String getVBus(){ return String((float)power.vBusSense.mV/1000,3);}
 void setup() {
   Serial.begin(115200);
   
-  #ifdef ENABLE_SERIAL_DEBUG
+  // TODO: this is messing up with ESP32S2 Native USB CDC serial output
+  #if defined(ENABLE_SERIAL_DEBUG)
     Serial.setDebugOutput(true);
   #endif
 
