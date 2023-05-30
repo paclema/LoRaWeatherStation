@@ -24,7 +24,7 @@ const float voltajes[16] = {
 
 #define ESP_INTR_FLAG_DEFAULT 0
 
-#define WDIR_PRINT_TIME 500
+#define WDIR_PRINT_TIME 5000
 
 #define NO_OF_SAMPLES   64          // Multisampling
 
