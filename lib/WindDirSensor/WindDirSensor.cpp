@@ -2,7 +2,7 @@
 
 
 WindDirSensor::WindDirSensor(int gpioPin): ADCpin(gpioPin){
-  // this->gpioPin = (gpio_num_t) gpioPin;
+  this->gpioPin = (gpio_num_t) gpioPin;
   pinMode(ADCpin, INPUT);
 
 };
@@ -21,6 +21,7 @@ void WindDirSensor::begin(void){
 
 uint16_t WindDirSensor::updateWDirmV() {
   uint32_t adc_reading = 0;
+
   // Without multisampling, only read one ADC value:
   // adc_reading = adc1_get_raw((adc1_channel_t)this->ADCchannel);
   // uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, &this->adcCalCharacteristics);
@@ -33,7 +34,7 @@ uint16_t WindDirSensor::updateWDirmV() {
   adc_reading /= NO_OF_SAMPLES;
   _currentWDirmV = esp_adc_cal_raw_to_voltage(adc_reading, &this->adcCalCharacteristics);
 
-  Serial.printf("WDIR sense reads %d ADC --> CALIBRATED: %dmV \n", adc_reading, _currentWDirmV);
+  // Serial.printf("WDIR sense reads %d ADC --> CALIBRATED: %dmV \n", adc_reading, _currentWDirmV);
   return _currentWDirmV;
 }
 
@@ -56,64 +57,24 @@ float WindDirSensor::mVToDir(uint16_t mV) {
   }
 
   _currentWDirDeg = static_cast<float>(dir) / 10;
-  Serial.printf(" \t closestIndex: %d \t\tValue:%d  dir Deg %.1f \t ",closestIndex, mV, _currentWDirDeg);
+  // Serial.printf(" \t closestIndex: %d \t\tValue:%d  dir Deg %.1f \t ",closestIndex, mV, _currentWDirDeg);
   return _currentWDirDeg;
 }
-
-int WindDirSensor::getWindDirection() {
-  // // int rawValue = adc1_get_raw(this->ADCchannel);
-  // // uint32_t voltage = esp_adc_cal_raw_to_voltage(rawValue, &this->adcCalCharacteristics);
-
-  // // Serial.printf("VBAT sense reads %dmV --> CALIBRATED: %dmV \n", rawValue, voltage);
-
-  // // // Escalar el valor a voltaje
-  // // // float scaledVoltage = (float)voltage / 1000.0;
-  // // float scaledVoltage = (float)voltage;
-
-  // uint32_t adc_reading = 0;
-  // // Multisampling
-  // for (int i = 0; i < NO_OF_SAMPLES; i++) {
-  //   adc_reading += adc1_get_raw((adc1_channel_t)this->ADCchannel);
-  // }
-  // adc_reading /= NO_OF_SAMPLES;
-  // uint32_t voltage = esp_adc_cal_raw_to_voltage(adc_reading, &this->adcCalCharacteristics);
-  // Serial.printf("WDIR sense reads %dmV --> CALIBRATED: %dmV \n", adc_reading, voltage);
-
-  // // int rawValue = adc1_get_raw(this->ADCchannel);
-  // // uint32_t voltage = esp_adc_cal_raw_to_voltage(rawValue, &this->adcCalCharacteristics);
-  // // Serial.printf("WDIR sense reads %dmV --> CALIBRATED: %dmV \n", rawValue, voltage);
-
-
-  // // Escalar el valor a voltaje
-  // float scaledVoltage = (float)adc_reading;
-  // currentWDirmV = adc_reading;
-
-  // // currentWDirmV = rawValue;
-  // // float scaledVoltage = (float)rawValue;
-
-
-  // Serial.printf("WindDir:%d  Deg %.1f ----> NEW calc: %f\n", closestIndex, grados[closestIndex], mVToDir(voltage));
-
-
-  // // Devolver el índice correspondiente al grado de dirección del viento
-  // return closestIndex;
-}
-
 
 void WindDirSensor::calculateValue(void* arg) {
   WindDirSensor* sensor = (WindDirSensor*) arg;
 
-  float currentSpeed;
-  // unsigned long lastWspeedCheck = millis();
+  unsigned long lastWspeedCheck = millis();
 
   while(1) {
-    // float deltaTime  = (millis() - lastWspeedCheck) / 1000.0 ;
+    float deltaTime  = (millis() - lastWspeedCheck) / 1000.0 ;
 
-    // int index = sensor->getWindDirection();
     uint16_t mV = sensor->updateWDirmV();
     float deg = sensor->mVToDir(mV);
 
-    // Serial.printf("WindDir:%d  Deg %.1f-- deltaTime: %.4f  ----> NEW calc: %f\n", index, grados[index], (float)deltaTime, sensor->adcToDir(sensor->currentWDirmV));
+    Serial.printf("WindDir:%.1f Deg -- ADC: %d mV-- deltaTime: %.4f\n", deg, mV, (float)deltaTime);
+
+    lastWspeedCheck = millis();
     vTaskDelay(WDIR_PRINT_TIME / portTICK_PERIOD_MS);
   }
 };
