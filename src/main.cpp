@@ -93,6 +93,7 @@ void setup() {
   config.addDashboardObject("VBat", getVBat);
   config.addDashboardObject("VBus", getVBus);
   #endif
+  
   config.addDashboardObject("getWDirADC", getWDirADC);
   config.addDashboardObject("getWDirDeg", getWDirDeg);
   
