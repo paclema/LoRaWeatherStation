@@ -1,5 +1,6 @@
 #ifndef RainSensor_H
 #define RainSensor_H
+#pragma once
 
 #include <Arduino.h>
 

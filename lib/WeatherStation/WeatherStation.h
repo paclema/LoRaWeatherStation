@@ -1,6 +1,8 @@
 #ifndef WeatherStation_H
 #define WeatherStation_H
+#pragma once
 
+#include <Arduino.h>
 #include "IWebConfig.h"
 #include <MQTTClient.h>
 

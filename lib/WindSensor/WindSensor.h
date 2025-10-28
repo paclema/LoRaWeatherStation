@@ -1,5 +1,6 @@
 #ifndef WindSensor_H
 #define WindSensor_H
+#pragma once
 
 #include <Arduino.h>
 
