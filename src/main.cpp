@@ -46,7 +46,6 @@ unsigned long lastGPSPublish = 0UL;
 
 //Lora and TTN
 //------------
-#include "loraFunctions.h"
 
 
 // Websocket functions to publish:
@@ -82,7 +81,6 @@ void setup() {
 
   config.begin();
 
-  // loraSetup();
  
   config.addDashboardObject("heap_free", getHeapFree);
   config.addDashboardObject("loop", getLoopTime);
@@ -128,8 +126,6 @@ void loop() {
 
 
   wStation.loop();
-
-  // loraLoop();
 
 
   #ifdef ARDUINO_IOTPOSTBOX_V1
